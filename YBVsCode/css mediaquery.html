@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<head>
+    <title>HTML-수업소개</title>
+    <meta charset="utf-8">
+    <style>
+        body{
+            margin:0;
+        }
+        a  {
+            color:black;
+            text-decoration: none; 
+        }
+        h1{
+            font-size: 45px;
+            text-align: center;
+            border-bottom:1px solid gray;
+            margin:0;
+            padding:20px;
+        }
+        #grid{
+            display: grid;
+            grid-template-columns:250px 1fr;
+        }
+        #grid ol{
+            border-right:1px solid gray;
+            width:200px;
+            margin:0;
+            padding: 20px;
+            padding-left:33px;
+        }
+        #article{
+            padding:15px;
+        }
+        @media(max-width:800px) {
+            #grid{
+                display: block;
+            }
+            #grid ol{
+                border-right:none;}
+            h1{
+                border-bottom:none;
+            }
+        }
+    </style>
+</head>
+
+<body> 
+    <h1><a href="index.html">HTML</a></h1>
+
+    <div id="grid">
+        <ol>
+            <li><a href="1.html">기술소개</a></li>
+            <li><a href="2.html">기본문법</a></li>
+            <li><a href="3.html">하이퍼텍스트와 속성</a></li>
+            <li><a href="4.html">리스트와 태그의 중첩</a></li>
+        </ol>
+
+        <div id="article">
+            <h2>기본문법</h2>
+            <p>
+                HTML은 기본적으로 요소로 구성 되어 있습니다.
+                요소는 시작 태그와 종료 태그의 쌍으로 구성 되어 있으며, 
+                태그는 <>(꺾쇠 괄호)로 둘러싸인 키워드입니다.
+                아래는 태그의 가장 기본적인 형태입니다.
+                다른 언어들과 같이 HTML에서도 주석을 사용할 수 있습니다.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
