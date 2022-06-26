@@ -5,34 +5,40 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="style.css">
     <script>
-        function LinksSetColor(color){
+        var Links = {
+            setColor: function(color){
             var alist=document.querySelectorAll('a');
             var i =0;
             while(i<alist.length){
             alist[i].style.color = color;
             i=i+1;
             }    
+            }
         }
-        function BodySetColor(color){
+
+        var Body = {
+            setColor:function (color){
             document.querySelector('body').style.color=color;
+            },
+            setBackgroundColor:function(color){
+            document.querySelector('body').style.background=color;
+            }
         }
-        function BodySetBackgroundColor(color){
-            document.querySelector('body').style.backgroundColor=color;
-        }
+
         function nightDayHandler(self){
-    var target=document.querySelector('body');
-    if(self.value === 'night'){
-        BodySetBackgroundColor('black');
-        BodySetColor('white');
-        self.value='day';
-        LinksSetColor('powderblue');
-    }else {
-        BodySetBackgroundColor('white');
-        BodySetColor('black');
-        self.value='night';
-        LinksSetColor('blue');
-        }
-    }   
+            var target=document.querySelector('body');
+            if(self.value === 'night'){
+                Body.setBackgroundColor('black');
+                Body.setColor('white');
+                self.value='day';
+                Links.setColor('powderblue');
+            }else {
+                Body.setBackgroundColor('white');
+                Body.setColor('black');
+                self.value='night';
+                Links.setColor('blue');
+                }
+        }   
     </script>
 </head>
 
