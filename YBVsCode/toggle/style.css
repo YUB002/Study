@@ -1,0 +1,42 @@
+input {
+    position:absolute; 
+    left:-10000%;
+    }
+
+label {
+    display: block;
+    position: relative;
+    width:200px;
+    height: 60px;
+    background: rgba(128, 128, 128, 0.274);
+    border-radius: 60px;
+    transition: background .4s;
+} /*transition-애니매이션*/
+
+label:after {
+    content:"";
+    position: absolute;
+    left: 7.5px;
+    top: 50%;
+    width: 45px;
+    height: 45px;
+    border-radius: 100%;
+    background: white;
+    transform: translateY(-50%);
+    box-shadow: 1px 3px 4px rgba(0,0,0,.1);
+    transition: all .4s;
+}
+
+input:checked + label{
+    background: rgb(224, 54, 54);
+}
+
+input:checked + label:after{
+    left: calc(100% - 52.5px);
+    /*left: inherit; inherit-부모속성 상속 
+    right: 7.5px; -> 속성이 다르기 때문에 배경은 변하지만 움직임은 변하지 않음*/ 
+} /*input이 체크될 때 input의 바로 뒤에 있는 label을 인접 형제 선택자로 설정(A+B)*/
+
+label span {
+    display: none;
+} 
