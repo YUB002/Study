@@ -14,6 +14,12 @@
         border-radius: 5px;
         cursor: pointer;
     }
+    #modalopen{
+        position: absolute;
+        right: 2.5%;
+        top: 2.5%;
+        
+    }
     .modal{
         position: fixed;
         top: 0;
@@ -45,6 +51,22 @@
     .hidden{
         display: none;
     }
+    #idpwdBtn{
+        background-color: steelblue;
+        border: none;
+        width: 6em;
+        height: 2em;
+        font-weight: bold;
+        font-size: 15px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    #idpwdBtn:hover {
+            background-color: rgb(200, 211, 212);
+            cursor: pointer;
+    }
+
 </style>
 
 </head>
@@ -53,8 +75,14 @@
     <div class="modal hidden">
         <div class="modal_overlay"></div>
         <div class="modal_content">
-            <h1>I'm a modal</h1>
-            <button>❌</button>
+            <h1>
+                <form action="http://localhost/method.php" method="post">
+                    ID <input type="text" name="id">
+                    PASSWORD <input type="password" name="pwd">
+                    <input type="submit" id="idpwdBtn">
+                </form>
+            </h1>
+            <button id="modalopen">✖</button>
         </div>
     </div>
     <script>
