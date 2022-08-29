@@ -146,7 +146,7 @@ where emp_no like '_______1%' and bonus is null
 order by emp_name;
 --where bonus is null and emp_no like '%-1%';
    
---nvl(A,B) : null value A이 null일때 B에 쓴 인자값이   ?  
+--nvl(A,B) : null value A이 null일때 B에 쓴 인자값이 반환  
 select emp_id, emp_name, nvl(dept_code,'인턴') from EMPLOYEE;
         
 ---------------------------------------------------------------------        
@@ -274,6 +274,310 @@ from dual;
 
 -- 2013/4/8의 요일은?
 select to_char(to_date(20130408, 'yyyymmdd'), 'dy') from dual;
+
+
+--decode :  ?:이랑 비슷한 연산자, java의 switch문과 유사
+
+--직원의 성별별로 직원출력
+select emp_id, emp_name, decode(substr(emp_no,8,1),1,'남',2,'여') 성별
+from employee;
+--decode 인자값에 대하여 이 값이 1과 같다면 '남'이라 출력
+--조건을 두개씩 짝지어서 확장시킬 수 있음 decode(substr(emp_no,8,1),1,'남',2,'여',3,'남',4,'여')
+--decode(substr(emp_no,8,1),1,'남','여')1일 경우 남, 나머지 경우에는 ‘여’ 
+--대소비교는 불가능
+
+--case : 같다다르다만 가능한 decode보다 경우의 수를 더 크게 확장시킬 수 잇다.
+select
+emp_id,
+emp_name,
+case
+    when substr(emp_no,8,1) = 1 then '남'
+    when substr(emp_no,8,1) = 2 then '여'
+    else 'none'
+end 성별
+from employee;
+
+
+--quiz1
+--2000년도 이전 입사자 중에 bonus가 null값인 직원을 격려비 대상자로 출력하세요.
+--(풀력 포함 사항 사번, 이름, 고용일)
+
+select emp_id 사번, emp_name 이름, hire_date 고용일,
+case
+    when hire_date < '00/01/01' and bonus is null then '격려비 대상자'
+    else '해당없음'
+end 대상여부
+from employee;
+
+--quiz02    
+--60년대생 직원들 중
+--60~65까지는 60년생 초반
+--66~69까지는 60년생 후반
+--으로 출력해보세요
+select emp_name, 
+case
+    when substr (emp_no,1,2)<65 then '60년생 초반'
+    when substr (emp_no,1,2)>=65 then '60년생 후반'
+    end 나이대
+from employee
+where substr(emp_no,1,2) between 60 and 69;
+
+--------------------------------여기까지는 모두 단일행 함수 (각각의 행마다 따로 적용되는 함수)
+
+--------------------------------그룹함수 (전체 행에서 하나의 결과를 도출하는 함수)
+
+--sum() : 전체 행에 대해 특정 컬럼의 전체 합을 반환하는 함수
+select sum(salary) 월인건비 from employee; --전체 직원의 급여 합
+
+--avg() : 전체 행에 대해 특정 컬럼의 전체 평균을 반환하는 함수
+select avg(salary) from employee; --전체 직원의 급여 평균
+
+--count() : 전체 행의 개수를 반환하는 함수 (조건에 따하 null 값은 counting 되지 않을 수 있음)
+select count(emp_name) from employee; --null 이 아닌 직원명의 개수
+select count(dept_code) from employee;--null이 아닌 부서코드의 개수
+select count(*) from employee; --null 문관하게 전체 행의 개수
+
+--max() :  전체 행 중에서 가장 큰 값을 반환하는 함수
+select max(salary) from employee;
+
+--min() : 전체 행 중에서 가장 작은 값을 반환하는 함수
+select min(salary) from employee;
+
+-------------------------------------------------------------------------------------------------------------
+--1. 60년생의 직원명과 년생,보너스 값을 출력하세요
+--그때 보너스 값이 null인 경우에는 0이라고 출력 되게 만드시오
+--       직원명    년생      보너스
+--   ex) 선동일    62        0.3
+--   ex) 송은희    63        0
+
+select emp_name 직원명 ,substr(emp_no,1,2)년생, nvl(bonus,0) 보너스 
+from employee
+where substr(emp_no,1,2) between 60 and 69;
+
+--2. '010' 핸드폰 번호를 쓰지 않는 사람의 수를 출력하시오.(뒤에 단위는 명을 붙이시오)
+--   인원
+--  ex) 3명
+
+select count(*)||'명' 인원
+from employee
+where phone not like '010%' ;
+
+--3. 부서코드가 D5, D9 인 직원들 중에서 2004년도에 입사한 직원의 수를 조회/
+--사번 사워명 부서코드 입사일
+
+select count(*)
+from employee
+where dept_code in('D5','D9') and substr(hire_date,1,2)=04;
+--and extract(year from hire_date)=2004;
+
+--4. 모든 직원의 나이 중 가장 많은 나이와 가장 적은 나이를 출력하세요(나이만 출력)
+
+select 
+max(extract(year from sysdate)-(substr(emp_no,1,2)+1900)) 최연장자,
+min(extract(year from sysdate)-(substr(emp_no,1,2)+1900)) 최연소자
+from employee;
+
+-----------------------------------------------------------------------------------
+--여기까지 함수파트
+-----------------------------------------------------------------------------------
+
+
+--Group by (그룹화 데이터를 요청하는 문법) - ~~헤쳐 모여!
+--총 급여합계  : select sum(salary) from employee;
+--부서별 급여 합계
+select 
+    dept_code "부서별코드", 
+    sum(salary) "부서별 급여합계"
+from employee 
+group by dept_code 
+order by dept_code;
+
+--직급코드별 인원수를 파악해보세요.
+select 
+    job_code "직급별코드", 
+    count(*)"직급별 인원수"
+from employee 
+where bonus is not null
+group by job_code
+order by job_code;
+--쿼리문의 실행순서 
+--employee에서 보너스가 null이 아닌 사람에 대하여 
+--잡코드로 묶고 잡코드와 카운트를 출력하고 잡코드로 정렬한다. 
+
+-- from -> where -> group by -> having (아직 안배움) -> select -> order by
+
+-----------------------------------------------------------------------
+
+select 
+   decode(substr(emp_no,8,1),2,'여','남') 성별,
+   count(*) 인원수
+from employee 
+group by decode(substr(emp_no,8,1),2,'여','남');
+
+--------------------------------------------
+--employee 테이블에서 직급이 J1을 제외하고, 부서, 부서별 사원수 및 평균급여를 출력하세요.
+select 
+nvl(dept_code, '인턴') 부서,
+count(*) "부서별 사원수",
+avg(salary) "평균 급여"
+from employee
+where not job_code in('J1')
+group by dept_code;
+--where job_code !='J1'
+
+--employee테이블에서 직급이 J1을 제외하고 입사년도별 인원수를 조회해서, 입사년 기준으로 오름차순 정렬하세요
+select 
+    extract(year from hire_date) 입사년도,
+    count(*)||'명' 인원수 
+from employee
+where job_code!='J1'
+group by  extract(year from hire_date)
+order by  extract(year from hire_date);
+
+--그룹화는 여러번 할 수 있다.
+select 
+   dept_code, job_code, count(*)
+from employee
+group by dept_code, job_code
+order by 1;
+--부서별로 모이고 그 안에서 직급코드대로 모여라
+--부서내 직급별 인원수 
+
+--부서내 성별별 인원수를 구해보세요
+select 
+nvl(dept_code,'인턴') 부서코드,
+decode(substr(emp_no, 8,1),2,'여','남') 성별,
+count(*)||'명' 인원수
+from employee
+group by dept_code,decode(substr(emp_no, 8,1),2,'여','남')
+order by dept_code;
+
+--직급 나이대  인원수
+select
+job_code 직급,
+decode(substr(emp_no, 1,1),6,'60',7,'70', 8,'80')||'년대생' 나이대,
+count(*) 인원수
+from employee
+group by job_code, decode(substr(emp_no, 1,1),6,'60',7,'70', 8,'80')
+order by 1;
+
+-----------------------------------------------------
+
+--having
+--부서별 급여 평균이 300만원을 넘는 부서의 부서코드 및 급여평균 출력
+
+select 
+    dept_code,
+    floor(avg(salary))
+from employee
+group by dept_code
+having avg(salary) >= 3000000;
+
+--where절은 프럼에 조건을 두는 것
+--해빙은 그룹바이에 의해 만들어진 조건절
+--where절에서는 그룹함수를 사용할 수 없다.
+
+
+--Join
+--두 개 이상의 테이블에서 연관성 있는 데이터들을 분류하고 새로운 가상 테이블로 생성하는 문법
+
+select * from job;
+select * from department;
+
+--cross join
+select * from job, department; --oracle 전용 문법
+select * from job, cross join department; --ANSI 표준
+
+--cross join의 결과물을  cartesian product 부름, 아무런 가치가 없는 데이터
+
+--inner join
+select 
+emp_id, 
+emp_name,
+dept_code,
+dept_title
+from
+    employee inner join department on dept_code = dept_id;
+--단 이 조건하(on)에 employee와 department를 합치겠다
+
+select emp_id, emp_name,job_name, e.job_code
+from employee e inner join job j on e.job_code = j.job_code;
+--겹치면 모호함으로 에러발생하기 때문에 from에서 앨리어스를 만들어 구분한다.
+--select 에서도 겹치는 부분을 넣으면 에러가 발생하여 구분해줘야한다. 
+--실행 순서가 select는 5번째이기 때문에 from에서 설정한 별칭이 사용가능하다. 
+
+select 
+dept_Id,
+dept_title,
+national_code
+from department inner join location on location_id = local_code;
+--departmet와 locationd의 inner join
+
+select 
+    emp_id,
+    emp_name,
+    dept_title
+from employee inner join department on dept_code=dept_id;
+--부서코드가 null인 사원은 빠져있으며 부서코드는 있지만 사람이 속해있지 않은 부서도 나타나지 않음
+
+
+--outer join
+select 
+    emp_id,
+    emp_name,
+    dept_title
+from 
+employee left outer join department on dept_code = dept_id;
+--left 왼쪽에 있는 것의 모든 것을 다 보여주겠다
+
+select 
+    emp_id,
+    emp_name,
+    dept_title
+from 
+employee right outer join department on dept_code = dept_id;
+
+select 
+    emp_id,
+    emp_name,
+    dept_title
+from 
+employee full outer join department on dept_code = dept_id;
+
+
+--self join
+select
+    e1.EMP_ID,
+    e1.emp_name,
+    e2.emp_name
+from 
+employee e1 inner join employee e2 on e1.manager_id =e2.emp_id;
+
+
+--직원명, 부서명, 직급명을 출력하세요 -> join이 3테이블 사이에서 일어남
+select 
+    emp_id,
+    emp_name, 
+    dept_title, 
+    job_name
+from 
+    employee e
+        join department d on dept_code=dept_id
+        join job j on e.job_code=j.job_code;
+
+-- 사번 / 직원명 / 부서코드 / 부서명 / 지역명 (location 테이블의 local_name)
+select 
+    emp_id,
+    emp_name,
+    dept_code,
+    dept_title,
+    local_name
+from
+    employee e
+    join department d on e.dept_code = d.dept_id
+    join location l on d.location_id=l.local_code;
+
+
 
 
 
