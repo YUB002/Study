@@ -578,6 +578,325 @@ from
     join location l on d.location_id=l.local_code;
 
 
+--1. 2020년 12월 25일이 무슨 요일인지 조회하시오.
+select to_char(to_date(20201225, 'yyyymmdd'), 'DAY') from dual;
+
+--2. 주민번호가 1970년대 생이면서 성별이 여자이고, 성이 전씨인 직원들의 사원명, 주민번호, 부서명, 직급명을 조회하시오.
+select 
+    emp_name 사원명, 
+    emp_no 주민번호, 
+    dept_title  부서명, 
+    job_name 직급명
+from 
+    employee e
+        join department d on e.dept_code = d.DEPT_ID
+        join JOB j on e.job_code = j.job_code
+where emp_name like '전%' and emp_no like '7%' and substr(emp_no,8,1) in('2','4');
+
+--3. 이름에 '형'자가 들어가는 직원들의 사번, 사원명, 부서명을 조회하시오.
+select 
+    emp_id 사번, 
+    emp_name 사원명, 
+    dept_title 부서명
+from 
+    employee e join department d on e.dept_code = d.DEPT_ID
+where emp_name like '%형%';
+
+--4. 해외영업부에 근무하는 사원명, 직급명, 부서코드, 부서명을 조회하시오.
+select 
+    emp_name 사원명, 
+    job_name 직급명, 
+    dept_code 부서코드, 
+    dept_title 부서명
+from 
+    employee e 
+        join department d on e.dept_code = d.DEPT_ID
+        join job j on e.JOB_CODE = j.JOB_CODE
+where dept_title like '%해외영업%';
+
+--5. 보너스포인트를 받는 직원들의 사원명, 보너스포인트, 부서명, 근무지역명을 조회하시오.
+select 
+    emp_name 사원명, 
+    bonus 보너스포인트, 
+    dept_title 부서명, 
+    local_name 근무지역명
+from   
+    employee e
+        join department d on e.DEPT_CODE = d.DEPT_ID
+        join location l on d.location_ID = l.local_code
+where bonus is not null;
+
+--6. 부서코드가 D2인 직원들의 사원명, 직급명, 부서명, 근무지역명을 조회하시오.
+select 
+    emp_name 사원명, 
+    job_name 직급명,
+    dept_title 부서명,
+    local_name 근무지역명
+from 
+    employee e
+     join department d on e.DEPT_CODE = d.DEPT_ID
+     join job j on e.JOB_CODE = j.job_code
+     join location l on d.LOCATION_ID = l.local_code
+where dept_code like 'D2';
+
+--7. 한국(KO)과 일본(JP)에 근무하는 직원들의 사원명, 부서명, 지역명, 국가명을 조회하시오.
+select 
+    emp_name 사원명, 
+    dept_title 부서명,
+    local_name 지역명,
+    national_code 국가명
+from
+    employee e
+     join department d on e.DEPT_CODE=d.DEPT_ID
+     join location l on d.LOCATION_ID = l.local_code
+where national_code in ('KO', 'JP');
+
+--8. 보너스포인트가 없는 직원들 중에서 직급이 차장과 사원인 직원들의 사원명, 직급명, 급여를 조회하시오. 단, join과 IN 사용할 것
+select 
+    emp_name 사원명, 
+    job_name 직급명,
+    salary 급여
+from 
+    employee e
+        join job j on e.JOB_CODE = j.JOB_CODE
+where bonus is null and j.job_name in('차장','사원');
+
+--9. 재직중인 직원과 퇴사한 직원의 수를 조회하시오.
+select (count(*)-count(ent_date)) "재직중인 직원",count(ent_date) "퇴사한 직원" from employee;
+
+SELECT  DECODE(ENT_YN,'N','재직','Y','퇴사') AS "재직여부",
+        COUNT(*) AS "인원 수"
+FROM EMPLOYEE
+GROUP BY ENT_YN;
+
+
+
+
+
+--------------DQL
+
+----------------------------
+--DDL : 객체를 수정 / 삭제 / 생성하는 명령어
+--create (객체 생성) / drop (객체 제거) / alter (객체 수정)
+
+create table cafe_menu(
+        --컬럼명 자료형 제약조건
+    pid number primary key, 
+    pname varchar(20) unique not null,
+    pprice number not null,
+    iced char(1) check(iced in ('Y','N','y','n')) not null
+);
+
+--varchar(사이즈) :  20은 우리가 입력할 수 있ㄴ 최대 글자
+--최대 20바이트 
+--20바이트를 다 사용하지 않더라도 varchar가 스스로 입력한 바이트 사이즈로 사이즈를 조절함
+--char(20)도 사용할 수 있으며 똑같이 문자형이지만 스스로 사이즈를 조절하지 못해 공간낭비
+--하나의 컬럼에 값이 수시로 빠른 속도로 변할 때에는 varchar보다는 공간을 낭비하더라도 char를 사용하는 게 낫다.
+--하지만 대개의 경우에는 varchar가 더 낫다.
+
+--primary key
+--하나의 컬럼을 만들 때 딱 한개의 컬럼에만 부여할 수 있는 속성
+--기본적으로 not null을 포함하고 중복을 모조리 제거
+
+--unique
+--중복 방지, null 값 허용
+
+--unique not null
+--primary key와 동일한 기능을 가진다(중복 방지, null 값 금지)
+--primary key와는 달리 여러 컬럼에서 동시에 사용 가능
+--primary key와 기능은 같지만 식별자로 인식되지는 않는다. 
+
+--check
+--check가 걸린 컬럼에는 지정한 글자 외에는 저장될 수 없다. 
+
+drop table cafe_menu;
+--삭제
+--데이터가 없을 경우에는 drop , 데이터가 있을 경우에는 alter 사용
+
+
+
+-------DML 
+
+--insert
+
+insert into cafe_menu values (cafe_menu_seq.nextval, 'Americano', 2000, 'Y'); 
+--모든 컬럼 값을 입력할 때 문법 
+--가로 안에는 데이터를 컬럼순서대로 채워주면 됨
+
+insert into cafe_menu (pid, pname) values (1002, 'Cafe Latte');
+--일부 컬럼 값을 선택적으로 입력할 때 문법
+--각각의 값이 들어가는 컬럼을 values 앞 가로 안에 명시
+
+insert into cafe_menu values (1002, 'Cafe Latte', 2000); 
+insert into cafe_menu values (cafe_menu_seq.nextval, 'Americano', 2000, 'Y'); 
+insert into cafe_menu values (cafe_menu_seq.nextval, 'Cafe Latte', 3000, 'Y'); 
+insert into cafe_menu values (cafe_menu_seq.nextval, 'Mocha', 3500, 'Y'); 
+
+select * from cafe_menu;
+
+
+-----------------------------------------------------------------
+-- Sequence : 특정 단일 값을 규칙에 따라 증가시키며 기억하는 객체
+
+create sequence cafe_menu_seq
+start with 1001 --1001부터 시작
+increment by 1 --1씩 증가
+nomaxvalue --제한을 두지 않겠다. maxvalue 9999;9999까지 갔다가 다시 1001로 돌아감
+nocache; 
+
+drop sequence cafe_menu_seq;
+
+select cafe_menu_seq.nextval from dual;
+-- 다음 값을 가져와
+--우리에게 1001을 주면서 값을 1002로 증가 
+
+select cafe_menu_seq.currval from dual;
+--현재 값
+
+
+
+create table sales_record(
+    sid number primary key, --거래 id값
+    pid references cafe_menu(pid), --팔린 상품
+    --cafe_menu테이블의 pid를 가져오겠다
+    sdate timestamp default sysdate not null --팔린 시간 
+    --default는 현재시간으로 세팅됨, 제약조건보다는 설정에 가깝다
+);
+
+--세일즈 레코드는 차일드 테이블, 카페메뉴는 부모테이블
+
+--시퀀즈 생성 : 1부터 무한대까지 1식 증가하는 sales_record_seq 생성
+create sequence sales_record_seq
+start with 1
+increment by 1
+nomaxvalue
+nocache;
+
+insert into sales_record values(sales_record_seq.nextval, 1001, sysdate);
+insert into sales_record values(sales_record_seq.nextval, 1002, sysdate);
+insert into sales_record values(sales_record_seq.nextval, 1003, sysdate);
+
+--세일즈레코드 2번 삭제
+delete from sales_record where sid=2;
+--한 행을 다 지우는 것이기때문에 컬럼이름을 적을 필요가 없다
+--조건(where)을 안적으면 다 지우는 것
+
+delete from cafe_menu where pid =1002;
+
+drop table sales_record;
+
+create table sales_record(
+    sid number primary key, 
+    pid references cafe_menu(pid) on delete cascade, 
+    sdate timestamp default sysdate not null 
+);
+--on delete cascade : 부모키가 지워졌을 때 연쇄적으로 부모키와 연관된 것들을 지운다.
+
+select * from sales_record;
+select * from cafe_menu;
+
+create table sales_record(
+    sid number primary key, 
+    pid references cafe_menu(pid) on delete set null, 
+    sdate timestamp default sysdate not null 
+);
+
+
+
+drop table sales_record;
+drop sequence cafe_menu_seq;
+drop table cafe_menu;
+
+
+select * from cafe_menu;
+select * from sales_record;
+
+
+update cafe_menu set pprice =3200 where pid = 1002; 
+--cafe_menu테이블의 pid가 1002번인 pprice의 값을 3000으로 바꾸겠다
+update cafe_menu set pprice =3300, pname='Orange Juice' where pid = 1002; 
+--여러개 수정
+
+-----------------------------------------------------------------
+--alter : 객체를 수정하는 명령
+
+--새로운 컬럼 추가 -원산지()
+alter table cafe_menu add (origin varchar(30) default 'none'  not null);
+
+update cafe_menu set origin = '브라질' where pid = 1001;
+update cafe_menu set origin = '미국' where pid = 1002;
+update cafe_menu set origin = '케냐' where pid = 1003;
+
+--기존 컬럼 수정
+alter table cafe_menu modify (origin varchar(50));
+
+--기존 컬럼의 이름 변경
+alter table cafe_menu rename column origin to originate;
+
+--기존 컬럼 삭제
+alter table cafe_menu drop column originate;
+
+desc cafe_menu;
+select * from cafe_menu;
+
+
+--Dictionary :  오라클 내에 내장된 시스템 테이블 
+select table_name from user_tables;
+select * from user_sequences; -- 모든 시퀀스 출력
+select * from user_constraints; 
+
+
+drop table sales_record;
+drop table cafe_menu;
+
+--컬럼명 자료형 제약조건 
+create table cafe_menu(
+    pid number constraint cafe_menu_pk primary key, 
+    pname varchar(20) constraint cafe_menu_pname_uk unique constraint cafe_menu_pname_nn not null,
+    pprice number constraint cafe_menu_pprice_nn  not null,
+    iced char(1) constraint cafe_menu_iced_ck  check(iced in ('Y','N','y','n')) constraint cafe_menu_iced_nn not null
+);
+
+alter table cafe_menu drop constraint cafe_menu_pk; --컬럼에 적용된 제약조건을 제거하는 명령
+alter table cafe_menu add constraint cafe_menu_pk primary key(pid);
+desc cafe_menu;
+select * from user_constraints; 
+
+alter table cafe_menu drop constraint cafe_menu_pname_uk;
+
+
+---------------TCL
+-- commit / rollback /savepoint 
+
+--트랜잭션
+--DBMS와 DB 사이 임시 저장공간에 DML 쿼리를 보관하는 작업의 단위
+--쿼리 작업의 원자성을 확보하기 위한 수단으로 사용 가능 
+
+commit;
+
+select * from sal_grade;
+
+delete from sal_grade;
+
+rollback;
+
+----------------------------------------------------------------------
+----------------------------------------------------------------------
+--view 
+--특정 테이블(or 테이블들)에서 추려낸 정보로 만들어지는 링크형 임시 테이블 
+
+select * from employee;
+
+create table employee_dev
+as 
+select emp_id, emp_name, email, phone from employee;
+--as ~ 을 바탕으로 employee_dev테이블을 만들겠다. 
+
+select * from employee_dev;
+
+
+
+
 
 
 
