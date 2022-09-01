@@ -897,6 +897,342 @@ select * from employee_dev;
 
 
 
+----------------DCL
+--revoke :  부여된 권한을 회수하는 명령
+
+select * from user_views;
+grant select on employee_view to dev; --dev 계정에 있는 employee_view에 대한 select 권한 부여
+
+revoke select on employee_view from dev;
+--dev계정으로부터 employee_view에 셀렉트할 권한을 뺏겠다.
 
 
+--Set operator 
+
+create table t1(
+    data number
+);
+create table t2(
+    data number
+);
+
+insert into t1 values(1);
+insert into t1 values(2);
+insert into t1 values(3);
+select * from t1;
+
+insert into t2 values(2);
+insert into t2 values(3);
+insert into t2 values(4);
+select * from t2;
+
+--union : 두 테이블의 출력 결과를 합치지만 중복되는 값은 한번만 병합
+select * from t1
+union 
+select * from t2;
+
+--union all : 두 테이블의 출력 결과를 중복 제거 없이 병합 
+select * from t1
+union all
+select * from t2;
+
+--intersect : 두 테이블의 교집합을 병합
+select * from t1
+intersect
+select * from t2;
+
+--minus : 첫 번째 테이블 조회 결과에서 두번째 테이블 조회 결과를 빼고 남는 (차집합)결과만 생성
+select * from t1
+minus
+select * from t2;
+
+
+select emp_name, phone, email from employee
+union 
+select * from department;
+--union 대상이 되는 두 테이블은 컬럼 개수가 같아야 하고 데이터타입이 일치해야 함
+
+
+
+
+-- SubQuery : 쿼리 내부에서 사용되는 쿼리
+
+--전지연 직원의 매니저 이름을 출력하세요.
+select * from employee where emp_name='전지연';
+select * from employee where emp_id=214;
+
+--위의 문제를 해결하기 위해서는 두번의 쿼리가 필요
+--하지만 서브쿼리를 사용하면 한번으로 가능 
+
+select * from employee where emp_id=(select manager_id from employee where emp_name='전지연');
+--서브쿼리는 항상 괄호안에 써야 함
+--서브쿼리는 쿼리보다는 데이터로 보는 것이 맞다 실행될 때 나오는 데이터
+
+--전 직원의 평균 급여보다 월급을 많이 받는 직원의 사번, 이름, 급여를 출력하세요.
+select avg(salary) from employee;
+select emp_id, emp_name, salary from employee where salary >=2822556;
+
+select emp_id, emp_name, salary from employee where salary >=(select avg(salary) from employee);
+
+--subquery
+--단일행 단일열 서브쿼리
+--다중행 서브쿼리
+--다중열 서브쿼리
+--다중행 다중열 서브쿼리
+
+
+--단일행 단일열 서브쿼리
+--1.직원 중에서 윤은해와 급여가 같은 사원들을 검색하여, 사원번호, 이름, 급여를 출력하세요.(윤은해는 제외)
+select 
+    emp_id,
+    emp_name,
+    salary
+from employee 
+where salary =(select salary from employee where emp_name='윤은해')
+and emp_name !='윤은해';
+
+--2. employee테이블에서 급여가 가장 많은 직원의 이름과 급여를 출력하세요.
+select emp_name, max(salary) from employee;--에러 사원명은 여러개를 최대값은 하나를 나타내므로 에러발생 
+select 
+    emp_name, 
+    salary 
+from employee 
+where salary = (select max(salary) from employee) 
+or salary =(select min(salary) from employee);
+
+--3.D1,D2부서에서 근무하는 직원들 중에 급여가 D5 부서 직원들의 평균 급여보다
+--많이 받는 사람들의 사번, 사원명, 급여, 부서코드를 출력하세요.
+select
+    emp_id,
+    emp_name,
+    salary,
+    dept_code
+from employee
+where dept_code in('D1','D2') 
+and salary > (select avg(salary) from employee where dept_code='D5');
+
+
+
+--다중행 서브쿼리
+--송종기 또는 박나라 속한 부서에 속해 있는 모든 직원이 정보
+select dept_code from employee where emp_name in('박나라','송종기');
+select * from employee where dept_code in('D9','D5');
+
+select
+    * 
+from employee 
+where dept_code in(select dept_code from employee where emp_name in('박나라','송종기'));
+
+--다중행 서브쿼리에서 비교식에서 =은 사용할 수 없고 in은 사용할 수 잇다.
+
+--송종기 또는 박나라 속한 부서를 제외한 모든 직원이 정보
+select
+    * 
+from employee 
+where dept_code not in(select dept_code from employee where emp_name in('박나라','송종기'));
+
+--차태연, 전지연 직원의 급여등급과 동일한 등급을 가진 직원들의 사뭔명, 직급명
+select 
+    emp_name,
+    job_name,
+    sal_level
+from employee e join job j on e.job_code=j.job_code
+where sal_level in (select sal_level from employee where emp_name in('차태연','전지연'))
+order by 3;
+
+--직급명이 대표, 부사장도 아닌 모든 직원의 이름, 부서명, 직급코드를 부서명으로 정렬하여 출력
+select 
+    emp_name,
+    nvl(dept_title, '인턴'),
+    job_code
+from employee left join department on dept_code = dept_id
+where job_code in (select job_code from job where job_name not in ( '대표','부사장'))
+order by dept_title;
+
+
+
+--다중열 서브쿼리
+--박나라 직원의 부서코드와 직급코드가 같은 직원 출력
+
+select emp_name, dept_code, job_code 
+from employee 
+where (dept_code,job_code) 
+in (select dept_code, job_code 
+from employee  
+where emp_name in ('박나라')) ;
+
+--다중행 다중열 서브쿼리
+--박나라와 차태연 직원의 부서코드와 직급코드가 같은 직원 출력
+select emp_name, dept_code, job_code 
+from employee 
+where (dept_code,job_code) 
+in (select dept_code, job_code 
+from employee  
+where emp_name in ('박나라','차태연')) ;
+
+
+--직급별로 급여가 가장 적은 사람의 이름과 급여를 출력하세요
+select emp_name, salary , job_code
+from employee
+where (job_code, salary) 
+in (select job_code,min(salary) 
+from employee
+group by job_code) 
+order by job_code
+;-- group by를 쓰면 group by의 기준은 출력할 수 있다???
+
+--상관 서브쿼리
+--SubQuery에서 MainQuery 요소를 가져가 사용한 후 결과를 반환하는 형태
+select emp_name, (select dept_title from department where dept_id = dept_code)부서명 
+from employee;
+
+--Inline View
+select emp_name, email 
+from(select emp_id,emp_name, phone,email from employee);
+-------------------------------------------------------------------------------------------------------------
+
+
+
+--- TOP-N 분석(순위 기법)
+select 
+    emp_id,
+    emp_name,
+    salary,
+    rank() over(order by salary desc)"급여 순위"
+from employee;
+  
+select 
+    emp_id,
+    emp_name,
+    salary,
+    dense_rank() over(order by salary desc)"급여 순위"
+from employee;
+  
+select
+    emp_id,
+    emp_name,
+    salary,
+    row_number() over(order by salary desc)"급여 순위"
+from employee;
+
+
+--5~10위까지만 출력
+
+select  * from (
+    select 
+        emp_id,
+        emp_name,
+        salary,
+        rank() over(order by salary desc)"급여 순위"
+    from employee)
+where "급여 순위" between 5 and 10;
+
+
+-----------------------------------문제
+--문제1
+--기술지원부에 속한 사람들의 사람의 이름,부서코드,급여를 출력하시오
+select 
+    emp_name 이름
+    ,dept_code 부서코드
+    ,salary 급여
+from employee 
+    inner join department 
+    on dept_code=dept_id
+where dept_title='기술지원부';
+
+--완 
+
+
+
+--문제2
+--기술지원부에 속한 사람들 중 가장 연봉이 높은 사람의 이름,부서코드,급여를 출력하시오
+select 
+    emp_name 이름 
+    ,dept_code 부서코드  
+    ,salary 급여
+from employee 
+where salary = (select max(salary) 
+                from employee 
+                    inner join department 
+                    on dept_code=dept_id
+                where dept_title='기술지원부'); 
+
+---완
+
+
+
+
+--문제3
+--매니저가 있는 사원중에 월급이 전체사원 평균을 넘고 
+--사번,이름,매니저 이름,월급(만원단위부터)을 구하시오
+ --* 단, JOIN을 이용하시오
+
+
+select
+    A.emp_id 사번
+    ,A.emp_name 이름
+    ,B.emp_name "매니저 이름"
+    ,trunc (A.salary/10000,0)||'만' 월급
+from employee A 
+    inner join employee B 
+    on A.manager_id =B.emp_id
+where A.manager_id is not null
+    and A.salary >= (select avg(salary) from employee);
+
+
+
+--문제4
+--각 직급마다 급여 등급이 가장 높은 직원의 이름, 직급코드, 급여, 급여등급 조회
+
+select 
+    emp_name  이름 
+    ,job_code 직급코드 
+    ,salary 급여 
+    ,sal_level 급여등급
+from employee
+where 
+(job_code, sal_level) 
+    in(select 
+            job_code,
+            min(Sal_level)
+        from employee
+        group by job_code)
+order by job_code;
+
+
+---완
+
+
+
+--문제5
+
+-- 부서별 평균 급여가 2200000 이상인 부서명, 평균 급여 조회
+-- 단, 평균 급여는 소수점 버림
+
+select 
+    dept_title 부서명
+    ,floor(avg(salary)) "평균 급여"
+from employee 
+    inner join department 
+    on dept_code=dept_id
+group by dept_title
+having avg(salary) >= 2200000;
+
+
+--문제6
+--직급의 연봉 평균보다 적게 받는 여자사원의
+--사원명,직급코드,부서코드,연봉을 이름 오름차순으로 조회하시오
+--연봉 계산 => (급여+(급여*보너스))*12    
+
+select 
+    emp_name 사원명
+    ,job_code 직급코드
+    ,dept_code 부서코드
+    ,salary*(1+nvl(bonus,0))*12 연봉
+from employee A
+where substr(emp_no,8,1)in('2','4') 
+and salary*(1+nvl(bonus,0))*12 < (select avg(salary*(1+nvl(bonus,0))*12) 
+                                                from employee B 
+                                                where B.job_code = A.job_code)
+order by emp_name;
 
