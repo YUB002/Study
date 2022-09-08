@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
@@ -35,12 +36,14 @@ public class Exam_5_CRUD  {
             String iced = sc.nextLine();
             
             Connection con = DriverManager.getConnection(url,id,pw);
-            Statement stat = con.createStatement();
-            
             String sql = 
-               "insert into cafe_menu values(cafe_menu_seq.nextval,'"+pname+"',"+pprice+",'"+iced+"')";
+                  "insert into cafe_menu values(cafe_menu_seq.nextval,?,?,?)";            
             
-            int result = stat.executeUpdate(sql);
+            PreparedStatement pstat = con.prepareStatement(sql);
+            pstat.setString(1, pname);
+            pstat.setInt(2, pprice);
+            pstat.setString(3, iced);
+            int result = pstat.executeUpdate();
             
             if(result>0) {
                System.out.println("입력 완료");
@@ -48,13 +51,11 @@ public class Exam_5_CRUD  {
             con.commit();
             con.close();
          }else if(menu == 2) {
-            
-            Connection con = DriverManager.getConnection(url,id,pw);
-            Statement stat = con.createStatement();
+            Connection con = DriverManager.getConnection(url,id,pw);            
             
             String sql = "select * from cafe_menu order by 1";
-            
-            ResultSet rs = stat.executeQuery(sql);
+            PreparedStatement pstat = con.prepareStatement(sql);
+            ResultSet rs = pstat.executeQuery();
             
             while(rs.next()) {
                int pid = rs.getInt("pid");
@@ -70,11 +71,10 @@ public class Exam_5_CRUD  {
             int delPID = Integer.parseInt(sc.nextLine());
             
             Connection con = DriverManager.getConnection(url,id,pw);
-            Statement stat = con.createStatement();
-            
-            String sql = "delete from cafe_menu where pid = " + delPID;
-            
-            int result = stat.executeUpdate(sql);
+            String sql = "delete from cafe_menu where pid = ?";
+            PreparedStatement pstat = con.prepareStatement(sql);
+            pstat.setInt(1, delPID);
+            int result = pstat.executeUpdate();
             if(result > 0) {
                System.out.println("삭제 성공");
             }
@@ -94,16 +94,14 @@ public class Exam_5_CRUD  {
             System.out.print("아이스 가능 (Y,N) ? ");
             String iced = sc.nextLine();
             
-            
             Connection con = DriverManager.getConnection(url,id,pw);
-            Statement stat = con.createStatement();
-            
-            String sql = 
-                  "update cafe_menu set pname='"+pname+
-                  "', pprice="+pprice+
-                  ",iced='"+iced+
-                  "' where pid="+updPID;
-            int result = stat.executeUpdate(sql);
+            String sql = "update cafe_menu set pname=?, pprice=?,iced=? where pid=?";
+            PreparedStatement pstat = con.prepareStatement(sql);
+            pstat.setString(1, pname);
+            pstat.setInt(2, pprice);
+            pstat.setString(3, iced);
+            pstat.setInt(4, updPID);            
+            int result = pstat.executeUpdate();
             
             if(result > 0) {
                System.out.println("변경 완료");
