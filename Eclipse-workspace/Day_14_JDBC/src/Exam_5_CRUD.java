@@ -1,121 +1,102 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Exam_5_CRUD  {
-   public static void main(String[] args) throws Exception {
+public class Exam_5_CRUD {
+	public static void main(String[] args) {
 
-      Class.forName("oracle.jdbc.driver.OracleDriver");
-      Scanner sc = new Scanner(System.in);
+		CafeMenuDAO dao= new CafeMenuDAO();
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		Scanner sc=new Scanner(System.in);
 
-      String url = "jdbc:oracle:thin:@localhost:1521:xe";
-      String id = "kh";
-      String pw = "kh";
-      
-      while(true) {
-         System.out.println("<< 카페 메뉴 관리 프로그램 >>");
-         System.out.println("1. 신규 메뉴 등록");
-         System.out.println("2. 메뉴 목록 출력");
-         System.out.println("3. 메뉴 정보 삭제 (상품코드로 삭제)");
-         System.out.println("4. 메뉴 정보 수정 (상품코드로 변경)");
-         System.out.println("0. 프로그램 종료");
-         System.out.print(">> ");
-         int menu = Integer.parseInt(sc.nextLine());
+		while(true) {
+			System.out.println("<<카페 메뉴 관리 프로그램>>");
+			System.out.println("1. 신규 메뉴 등록");
+			System.out.println("2. 메뉴 목록 출력");
+			System.out.println("3. 메뉴 삭제(상품코드로 삭제)");
+			System.out.println("4. 메뉴 변경(상품코드로 변경)");
+			System.out.println("0. 프로그램 종료");
+			System.out.print(">>");
+			int menu=Integer.parseInt(sc.nextLine());
 
-         if(menu == 1) {
-            System.out.print("메뉴 이름 : ");
-            String pname = sc.nextLine();
-            
-            System.out.print("메뉴 가격 : ");
-            int pprice = Integer.parseInt(sc.nextLine());
-            
-            System.out.print("아이스 가능 (Y,N) ? ");
-            String iced = sc.nextLine();
-            
-            Connection con = DriverManager.getConnection(url,id,pw);
-            String sql = 
-                  "insert into cafe_menu values(cafe_menu_seq.nextval,?,?,?)";            
-            
-            PreparedStatement pstat = con.prepareStatement(sql);
-            pstat.setString(1, pname);
-            pstat.setInt(2, pprice);
-            pstat.setString(3, iced);
-            int result = pstat.executeUpdate();
-            
-            if(result>0) {
-               System.out.println("입력 완료");
-            }
-            con.commit();
-            con.close();
-         }else if(menu == 2) {
-            Connection con = DriverManager.getConnection(url,id,pw);            
-            
-            String sql = "select * from cafe_menu order by 1";
-            PreparedStatement pstat = con.prepareStatement(sql);
-            ResultSet rs = pstat.executeQuery();
-            
-            while(rs.next()) {
-               int pid = rs.getInt("pid");
-               String pname = rs.getString("pname");
-               int pprice = rs.getInt("pprice");
-               String iced = rs.getString("iced");
-               System.out.println(pid + " : " + pname + " : " + pprice + " : " + iced);
-            }
-            con.close();
-            
-         }else if(menu == 3) {
-            System.out.print("삭제할 상품 코드 : ");
-            int delPID = Integer.parseInt(sc.nextLine());
-            
-            Connection con = DriverManager.getConnection(url,id,pw);
-            String sql = "delete from cafe_menu where pid = ?";
-            PreparedStatement pstat = con.prepareStatement(sql);
-            pstat.setInt(1, delPID);
-            int result = pstat.executeUpdate();
-            if(result > 0) {
-               System.out.println("삭제 성공");
-            }
-            con.commit();
-            con.close();
-         }else if(menu == 4) {
-            
-            System.out.print("변경할 메뉴의 상품 코드 : ");
-            int updPID = Integer.parseInt(sc.nextLine());
-            
-            System.out.print("메뉴 이름 : ");
-            String pname = sc.nextLine();
-            
-            System.out.print("메뉴 가격 : ");
-            int pprice = Integer.parseInt(sc.nextLine());
-            
-            System.out.print("아이스 가능 (Y,N) ? ");
-            String iced = sc.nextLine();
-            
-            Connection con = DriverManager.getConnection(url,id,pw);
-            String sql = "update cafe_menu set pname=?, pprice=?,iced=? where pid=?";
-            PreparedStatement pstat = con.prepareStatement(sql);
-            pstat.setString(1, pname);
-            pstat.setInt(2, pprice);
-            pstat.setString(3, iced);
-            pstat.setInt(4, updPID);            
-            int result = pstat.executeUpdate();
-            
-            if(result > 0) {
-               System.out.println("변경 완료");
-            }
-            
-            con.commit();
-            con.close();
-         }else if(menu == 0) {
-            System.out.println("프로그램을 종료합니다.");
-            System.exit(0);
-         }else {
-            System.out.println("메뉴를 다시 확인해주세요.");
-         }
-      }
+			if (menu == 1) {
+				System.out.print("메뉴 이름 : ");
+				String pname=sc.nextLine();
 
-   }
+				System.out.print("메뉴 가격 : ");
+				int pprice=Integer.parseInt(sc.nextLine());
+
+				System.out.print("아이스 가능(Y,N) ? ");
+				String iced=sc.nextLine();
+
+				try {
+					int result =dao.insert(new CafeMenuDTO(0,pname,pprice,iced));
+					if(result>0) {
+						System.out.println("입력 완료");
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+					System.out.println("같은 오류가 반복되면 관리자에게 문의하세요.");
+				}
+
+
+			}else if (menu == 2){
+
+				try {
+					ArrayList<CafeMenuDTO> result = dao.selectAll();
+					for(CafeMenuDTO dto : result) {
+						System.out.println(dto.getPid()+"\t"+dto.getPname()+"\t"+dto.getPprice()+"\t"+dto.getIced());
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+					System.out.println("같은 오류가 반복되면 관리자에게 문의하세요.");
+				}
+
+			}else if (menu == 3){
+
+				System.out.print("삭제할 메뉴의 코드 : ");
+				int delid = Integer.parseInt(sc.nextLine());
+
+				try {
+					int result = dao.delete(delid);
+					if(result > 0) {
+						System.out.println("삭제 완료");
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+					System.out.println("문제가 발생했습니다. 관리자에게 문의하세요.");
+					System.out.println("manager@admin.com");
+				}
+			}else if (menu == 4){
+
+				System.out.print("변경할 메뉴의 코드 : ");
+				int updpid = Integer.parseInt(sc.nextLine());
+				System.out.print("메뉴 이름 : ");
+				String pname=sc.nextLine();
+				System.out.print("메뉴 가격 : ");
+				int pprice=Integer.parseInt(sc.nextLine());
+				System.out.print("아이스 가능(Y,N) ? ");
+				String iced=sc.nextLine();
+
+				try {
+					int result =dao.update(new CafeMenuDTO(updpid,pname,pprice,iced));
+					if(result>0) {
+						System.out.println("입력 완료");
+					}
+				}catch(Exception e) {
+					e.printStackTrace();
+					System.out.println("같은 오류가 반복되면 관리자에게 문의하세요.");
+				}
+			}else if (menu == 0){
+				System.out.println("프로그램을 종료합니다");
+				System.exit(0);
+			}else {
+				System.out.println("메뉴를 다시 확인해주세요");
+			}
+		}
+	}
 }
