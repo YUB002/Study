@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{box-sizing: border-box;}
+        /* div{border: 1px solid black;} */
+        body{margin: 0px;}
+        @font-face{
+            src: url("asset/BMHANNA_11yrs_ttf.ttf");
+            font-family: "BM";
+        }
+        @font-face{
+            src: url("asset/EF_Diary.ttf");
+            font-family: "EF";
+        }
+
+        .container{
+            width: 100%;
+            min-width: 1000px;
+            background-image: url(asset/cosmos.jpg);
+        }
+        .header{
+            height: 400px;
+        }
+        .header>div{
+            float: left;
+        }
+        .header>.title{
+            width:100%;
+            height: 100%;
+        }
+        .header>.title>img{
+            position: absolute;
+            margin: auto;
+            top: 0%;
+            left: 50%;
+            transform: translate(-50%,50%);
+            width: 700px;
+            height: 250px;
+        }
+ 
+        .content>.story{height:1000px;}
+        .content>.story>.video{
+            position: relative;
+            width: calc(100%-20px);
+        }
+        .content>.story>.video>video{
+        position: absolute;
+        left: 50%;
+        top: 100px;
+        transform: translatex(-50%);
+        width: 1200px;
+        height: 600px;
+        }
+        #storyline{
+            position: relative;
+            width: 1300px;
+            height: 100px;
+            font-size: 40px;
+            left: 50%;
+            top: 75%;
+            transform: translate(-50%,-4%);
+            text-align: center;
+        }
+        .font{
+            background-image: linear-gradient(90deg, rgb(45, 196, 241), rgb(255, 255, 255), rgb(248, 175, 244), rgb(214, 58, 206), rgb(148, 16, 82));
+            -webkit-background-clip: text;
+            color: transparent;
+            font-weight: bold;
+            font-size: 50px;
+            font-family: "BM";
+        }
+
+        .profile{
+            position: relative;
+            height: 800px;
+        }
+        .profile>div{
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            left: 3%;
+            top: 10%;
+            box-shadow: 0 10px 20px rgb(40,40,40);
+        }
+        .profile>.mimiprofile{
+            left: 27%;
+            top: 10%;
+        }
+        .profile>.youngprofile{
+            left: 52%;
+            top: 10%;
+        }
+        .profile>.jinprofile{
+            left: 77%;
+            top: 10%;
+        }
+        .profile>div>img{
+            height: 100%;
+            width: 100%;
+        }
+        .profile>div>.overlay{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            background: black;
+            cursor: pointer;
+        }
+        .profile>div>.overlay>.over_content{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            color: white;
+            font-family: "EF";
+            text-align: center;
+        }
+        .profile>div:hover .overlay{opacity: 0.8;}
+        #intro{
+            position: relative;
+            height: 200px;
+            width: 50%;
+            line-height:200px;
+            left: 35%;
+            font-weight: bold;
+            font-size: 50px;
+        }
+ 
+        .footer>.torongtt{
+            height: 480px;
+            position: relative;
+            top: 10%;
+        }
+        .footer>.torongtt>div{float: left;}
+        .footer>.torongtt>.torongtt_img{
+            width: 20%;
+            height: 100%;
+        }
+        .footer>.torongtt>.torongtt_img>img{
+            border-radius: 50%;
+            height: 100%;
+            position: relative;
+            left: 50%;
+    
+        }
+        .footer>.torongtt>.torongtt_text{
+            position: relative;
+            left: 50px;
+            width: 77%;
+            height: 80%;
+            text-align: center;
+            font-family: "EF";
+            line-height: 120px;
+            font-size: 30px;
+            color: white;
+        }
+        .footer>.etc{height: 600px;}
+        #tvn{
+            position: relative;
+            top: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 100px;
+        }
+
+        .instabox{
+            position: fixed;
+            width: 130px;
+            height: 50%;
+            top: 250px;
+            left:-100px;
+            transition-duration: 1s;
+            border-radius: 10%;
+            overflow: hidden;
+            border-color: white;
+            color: white;
+        }
+        .instabox>.div{float: left;}
+        .instabox:hover{left: 5px;}
+        .instabox>.box{
+           width: 75%;
+           height: 100%;
+        }
+        .instabox>.box>div{
+            height: 20%;
+            text-align: center;
+        }
+        .instabox>.insta{
+            position: absolute;
+            top: 0px;
+            left: 96px;
+            height: 100%;
+            width: 25%;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            text-align: center;
+        }
+        .instaimg{
+            position: relative;
+            top: 50%;
+            left: 0px;
+            width: 80px;
+            height: 80px;
+            transform: translate(0,-50%);
+            border-radius: 30%;
+            border: 2px solid white;
+        }
+ 
+        .epi{
+            width: 100%;
+            height: 3000px;         
+        }
+        .epi>.slide{
+            width: 95%;
+            height: 15%;
+        }
+        .epi>.slide>.section{
+            position: relative;
+            height: 95%;
+            top: 5%;
+            left: 15%;
+            width: 90%;
+        }
+        .epi>.slide>div>div{
+            width: 40%;
+            height: 95%;
+            float: left;
+        }
+        .epi>.slide>div>div>div{float: left; }
+        .epi>.slide>div>div>.epi_img{
+            width: 50%;
+            height: 100%;
+        }
+        .epi>.slide>div>div>.epi_img>img{
+            position: relative;
+            width: 100%;
+            margin: auto;
+            top: 20%;
+            border-radius: 5%;
+        }
+       .epi>.slide>div>div>.epi_text{
+        width: 50%;
+        height: 100%;
+        text-align: center;
+         color: white; 
+         font-family: "EF";
+        }
+       .name{font-family: "BM";}
+       .epi>.slide>div>.empty{
+        width: 10px;
+        height: 100%;
+        }
+        #epi{
+        position: relative;
+        left: 50%;
+        transform: translate(-50%,0);
+        text-align: center;
+        }
+        a{color: rgb(236, 47, 151);}
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title">
+                <img src="asset/title.png">
+            </div>
+        </div>
+        <div class="content">
+            <div class="story">
+                <div class="video">
+                    <video src="asset/story.mp4" autoplay controls poster="asset/video_poster.jpg">
+                     해당 영상의 경로가 올바르지 않습니다.
+                    </video>
+                </div>
+                <div class="font"
+                id="storyline">
+                      신개념 하이브리드 멀티버스 액션 어드벤처 버라이어티 콘셉트 예능!
+                </div>
+            </div>
+            <div class="font" id="intro">
+                토롱이를 잡을 4명의 용사
+            </div>
+            <div class="profile">
+     
+                <div class="eunprofile">
+                    <img src="asset/eun.png" alt="">
+                    <div class="overlay">
+                        <div class="over_content">
+                         <h1>이은지</h1>
+                         <h3>끼폭발 용사</h3>
+                         <p>필살기: 멀리서 보면 ‘희극’, 가까이서 보면 ‘광기’</p>
+                            <p>"이 한 몸 바쳐 방송해 내리!"
+                            희극인의 몸 안에 갇힌 댄서의 영혼!
+                            넘치는 끼를 자제할 생각이 없는
+                            방송댄스 전문(?) 톱 티어 코미디언
+                           
+                            카리스마 넘치는 오락실 짱을 꿈꾸지만,
+                            현실은 동생들에게 혼꾸녕 나기 일쑤?!
+                            ‘맏내’ 용사 은지의 Z세대 적응 미션 Start!</p>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="mimiprofile">
+                    <img src="asset/mimi.png" alt="">
+                    <div class="overlay">
+                        <div class="over_content">
+                         <h1>미미</h1>
+                         <h3>엉뚱발랄 용사</h3>
+                         <p>필살기: 상황 불문 ‘리얼 긍정 파워 빔’</p>
+                            <p>아이스크림만 있으면 초긍정 모드 ON!
+                                세상 무해한 인간미와 탈 지구급 친화력으로
+                                동물들의 마음까지 훔친 이 구역의 인싸,
+                                '오 마이 미현이' 등장!
+                               
+                                리얼하고 자유분방한 오답지 제출로
+                                게임의 판도를 바꾸는 'K-밈' 대공개!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="youngprofile">
+                    <img src="asset/young.png" alt="">
+                    <div class="overlay">
+                        <div class="over_content">
+                         <h1>이영지</h1>
+                         <h3>불나방 용사</h3>
+                         <p>필살기: 영석이 형 기선제압용 ‘사자후’</p>
+                            <p>전투력 MAX, 공격력 MAX, 생명력... 측정 불가?!
+                                전무후무한 예능 사기캐 등판!
+                               
+                                "영석이 형!" 외침으로 아침을 시작하는
+                                지구 용사 대표 무한 에너자이저.
+                                어디서든 당당하게 걷기 시전하다가도,
+                                FEEL 받으면 맨땅에 드러눕는 파격 행보까지!
+                                그동안 본 적 없는 신흥 캐릭터가 나타났다!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="jinprofile">
+                    <img src="asset/jin.png" alt="">
+                    <div class="overlay">
+                        <div class="over_content">
+                         <h1>안유진</h1>
+                         <h3>욕망 용사</h3>
+                         <p>
+                            필살기: ‘욕망’ 속으로 Love Dive!</p>
+                            <p>올해 Lv 20, 먹을 것 앞에서만큼은
+                                능력치 만렙 찍는 인생 N회차 막내!
+                               
+                                동년배보다 깊고 진한 ‘토종 입맛’ 뽐내며
+                                순박 댕댕미로 엔딩요정도 놓치지 않는
+                                앙큼한 막내 매력에 언니들은 폴인럽♥
+                                ‘프로 아이돌’ 유진이의 일탈이 시작된다!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="epi">
+                <div class="slide">
+                    <div class="font" id="epi">
+                     Episode
+                    </div>
+                    <div class="section">
+                    <div class="epi1">
+                        <div class="epi_img">
+                        <img src="asset/1.png" alt=""></div>
+                        <div class="epi_text">
+                            <div class="epi_text_box">
+                            <div class="name"><h1>1화</h1></div>
+                            <p>
+                                <h3>토낀 옥토끼 잡으로 태국'방콕'으로 출★동
+                                드.디.어 뭉친 '지구 용사' 4인방!</h3>
+                                </p><p>
+                                택그으로 떠나기 위한 첫 번째 관문!
+                                시대별 공항 패션이 걸린 <랜덤 플레이 댄스>
+                                환상 팀워크로 몸풀기를 마친 멤버들은 추억 속 의상으로 비행기에 탑승하는데... 
+                                </p> ............. <p>   
+                                </p>
+                                <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="empty"></div>
+                    <div class="epi2">
+                        <div class="epi_img">
+                        <img src="asset/2.png" alt=""></div>
+                        <div class="epi_text">
+                            <div class="epi_text_box">
+                                <div class="name"><h1>2화</h1></div>
+                            <p>
+                               <h3><맥주를 부르는 밤 (Feat. 테라스)></h3>
+                                방콕의 첫날 밤을 시원!하게 적실
+                                현지 맥주&엄음, 각족 안주까지 풀세팅↗
+                                </p><p>
+                                <h3><00년대 추억열차 탑승하실게요♪></h3>
+                                '태국 스트리트 푸드'를 건 진건승부!였으나....
+                                밥은 뒷전, 폭주하는 '댄스' 기관차?!
+                            </p> ............. <p>
+                            </p>
+                            <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="section">
+                    <div class="epi1">
+                        <div class="epi_img">
+                        <img src="asset/3.png" alt=""></div>
+                        <div class="epi_text">
+                            <div class="epi_text_box">
+                                <div class="name"><h1>3화</h1></div>
+                            <p>
+                                <h3><방콕 '낙오' 대소동></h3>
+                                힐링 '타이마사지'로 방심한 용사즈!
+                                정신을 차려보니 우리밖에 없다...?
+                                </p><p>  
+                                <h3><업그레이드 ver.액션 딸기 게임></h3>
+                                여행은 역시 취향대로! '개인 자유시간'을 건
+                                '액견 딸기 게임'이 시작되었으나....
+                                 </p> ............. <p>
+                            </p>
+                            <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="empty"></div>
+                    <div class="epi2">
+                        <div class="epi_img">
+                        <img src="asset/4.png" alt="">
+                        </div>
+                        <div class="epi_text">
+                            <div class="epi_text_box">
+                                <div class="name"><h1>4화</h1></div>
+                            <p>
+                                <h3><토끼고 토끼는 레이스></h3>
+                                <p>
+                                [속보] "달나라에서 토낀 토롱이,
+                                용사즈 놀리고 눈앞에서 달아나..."
+                                </p>
+                                <h3><방콕 BYE! 지상낙원으로 GO↗></h3>
+                                낭만이 가득한 섬 '꼬 사무이' 도착!
+                            </p> ............. <p>
+                            </p>
+                            <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="section">
+                        <div class="epi1">
+                            <div class="epi_img">
+                            <img src="asset/5.png" alt=""></div>
+                            <div class="epi_text">
+                                <div class="epi_text_box">
+                                    <div class="name"><h1>5화</h1></div>
+                                <p>
+                                    <h3><혼돈의 절→대→음→감↗></h3>
+                                    인체공학적 시스템 도입(?)으로
+                                    한층 더 업그레이드 된 NEW절대음감!
+                                    </p><p>
+                                    <h3><'위기탈출 제작진'></h3>
+                                    "네 거친 게임 속도와~ 그걸 지켜보는 NA...♬"
+                                    태국 요리 한 상을 건 '인물 퀴즈'!
+                                   </p> ............. <p>
+                                </p>
+                                <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="empty"></div>
+                        <div class="epi2">
+                            <div class="epi_img">
+                            <img src="asset/6.png" alt=""></div>
+                            <div class="epi_text">
+                                <div class="epi_text_box">
+                                    <div class="name"><h1>6화</h1></div>
+                                <p>
+                                    <h3><자네 지금 뭐 하는 건가(2)></h3>
+                                    불 꺼진 방안, 발밑에서 움직이는 무언가...
+                                    다음 날 맞이한 충격적인 결말?!
+                                    </p><p>
+                                    <h3><아이스크림 주세요,'퀴즈'가 담겨있는♬></h3>
+                                    풀장에서 무한 DIVE 중인 용사들!
+                                    그 앞에 나타난 '아이스크림 판매상'..?
+                                </p> ............. <p>
+                                </p>
+                                <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="section">
+                            <div class="epi1">
+                                <div class="epi_img">
+                                <img src="asset/7.png" alt=""></div>
+                                <div class="epi_text">
+                                    <div class="epi_text_box">
+                                    <div class="name"><h1>7화</h1></div>
+                                    <p>
+                                        <h3><돌아온 '랜덤 플레이 댄스'></h3>
+                                        "HEY~내가 원했던 게 이거잖아♥"
+                                        지락실 '댄스 사랑'에, 판 깔아준 제작진!
+                                        </p><p>
+                                        <h3><네 마음이 곧 내 마음♥></h3>
+                                        난 재료를 살 테니..넌 요리를 해라!
+                                    </p> ............. <p>
+                                    </p>
+                                    <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="empty"></div>
+                            <div class="epi2">
+                                <div class="epi_img">
+                                <img src="asset/8.png" alt=""></div>
+                                <div class="epi_text">
+                                    <div class="epi_text_box">
+                                        <div class="name"><h1>8화</h1></div>
+                                    <p>
+                                        <h3>< WE Are The World♬></h3>
+                                            K-pop으로 하나 되는 '위 아 더 월드'
+                                        </p>    <p>
+                                        <h3><돌아온 나나매전 in 바다 한복판></h3>
+                                        정들었던 '꼬 사무이'를 뒤로하고,
+                                        파이널 스테이지 '카오 속'으로 출발!
+                                    </p> ............. <p>
+                                    </p>
+                                    <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section">
+                            <div class="epi1">
+                                <div class="epi_img">
+                                <img src="asset/9.png" alt=""></div>
+                                <div class="epi_text">
+                                    <div class="epi_text_box">
+                                    <div class="name"><h1>9화</h1></div>
+                                    <p>
+                                        <h3><'카오 속' 정글 숲을 지나서 가자></h3>
+                                        마.침.내 파이널 스테이지에 당도한 용사즈!
+                                        </p><p>
+                                        <h3><양육강식의 저녁 식사></h3>
+                                        스태프 선정 ★1등 타이 레스토랑★
+                                        이곳에서 시작된 치열한 저녁 식사?!
+                                        </p> ............. <p>    
+                                    </p>
+                                        <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                                </div>
+                                </div>
+                            </div>
+                            <div class="empty"></div>
+                            <div class="epi2">
+                                <div class="epi_img">
+                                <img src="asset/10.png" alt=""></div>
+                                <div class="epi_text">
+                                    <div class="epi_text_box">
+                                        <div class="name"><h1>10화</h1></div>
+                                    <p>
+                                    <h3><옥황상제가 쏜다! 포상 휴가 출발></h3>
+                                    "토롱이를 잡은 자에게는 상품이 있나니.."
+                                    소듕한 직원이 돌아와 기쁜 옥황상제는
+                                    용사들에게 포상 휴가를 내리는데!
+                                     </p>   <p>
+                                    <h3><까까 러버들의 '금일봉' 빅매치></h3>
+                                    휴가 떠나기 전 교칭은 국룰이지!
+                                    포상 휴가에 쇼핑비까지 옥.황 FULL지원♬
+                                </p> ............. <p>     
+                                </p>
+                                    <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="section">
+                                <div class="epi1">
+                                    <div class="epi_img">
+                                    <img src="asset/11.png" alt=""></div>
+                                    <div class="epi_text">
+                                        <div class="epi_text_box">
+                                            <div class="name"><h1>11화</h1></div>
+                                        <p>
+                                           <h3><강원도 왔젤라또♥></h3> 
+                                            바쁘다 바빠, 다음 일정은 디저트!
+                                            </p><p>
+                                            <h3><쌈판(?) 벌어진 저녁 식사></h3>
+                                            ★옥황표 패키지 코스의 하이라이트★
+                                            여행 국룰 K-바비큐 저녁상을 건
+                                            이번 시즌 마지막 댄스 PARTY(?)
+                                        </p> ............. <p>    
+                                            </p>
+                                            <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                                    </div>
+                                    </div>
+                                </div>
+                                <div class="empty"></div>
+                                <div class="epi2">
+                                    <div class="epi_img">
+                                    <img src="asset/12.png" alt=""></div>
+                                    <div class="epi_text">
+                                        <div class="epi_text_box">
+                                            <div class="name"><h1>12화</h1></div>
+                                        <p>
+                                           <h3><뿅뿅 지구오락실 감독판></h3>
+                                            에피소드가 너~무 많아 편집된 아침식사!
+                                            </p><p>
+                                            <h3><토롱이의 비하인드 스토리></h3>
+                                            토롱이의 굴욕적인 사건?! 
+                                        </p>
+                                        <a href="http://program.tving.com/tvn/tvneartharcade/13/Board/List"><h3>보러가기</h3></a>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="torongtt">
+                <div class="torongtt_img">
+                    <img src="asset/yuzu.jpg">
+                </div>
+                <div class="torongtt_text" >
+                    <div class="font"><h2>우주떡집 지구 로켓거북배송 개시!</h2></div>
+                    <p>우주떡집 팥앙금떡</p>
+                    <p>☎<a href="https://www.11st.co.kr/products/4885191474?trTypeCd=54&trCtgrNo=2051946">1588-**?!</a>로 전화주세요!</p>
+                </div>
+            </div>
+            <div class="etc">
+                <img src="asset/tvn.png" id="tvn">
+            </div>
+
+
+        </div>
+ 
+        <div class="instabox">
+        <div class="box">
+            <div class="eun">
+                <a href="https://www.instagram.com/happy._.ej/"><img src="asset/eun.png" class="instaimg"></a>
+            </div>
+            <div class="mimi">
+                <a href="https://www.instagram.com/mimmiiiya/"><img src="asset/mimi.png" class="instaimg"></a>
+            </div>
+            <div class="young">
+                <a href="https://www.instagram.com/youngji_02/"><img src="asset/young.png" class="instaimg"></a>
+            </div>
+            <div class="jin">
+                <a href="https://www.instagram.com/_yujin_an/"><img src="asset/jin.png" class="instaimg"></a>
+            </div>
+            <div class="torong">
+                <a href="https://www.instagram.com/arms_torong.ok/"><img src="asset/torong2.png" class="instaimg"></a>
+            </div>
+        </div>
+        <div class="insta"><b>I N S T A</b></div>
+        
+    </div>
+</body>
+</html>
+
