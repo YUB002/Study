@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quiz06</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <style>
+        table{text-align: center;}
+        input[type=text] {
+            display: block;
+            margin: 3px;
+        }
+
+        #writer {
+            display: inline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <fieldset>
+        <legend>Input Controls</legend>
+        <input type="text" id="title" placeholder="제목">
+        <input type="text" id="contents" placeholder="내용">
+        <input type="text" id="writer" placeholder="작성자">
+        <button id="btn">추가하기</button>
+    </fieldset>
+    <table border="1">
+        <tr>
+            <td>제목</td>
+            <td>내용</td>
+            <td>작성자</td>
+            <td>삭제</td>
+        </tr>
+    </table>
+
+    <script>
+        $("table").on("click",".del",function(){
+            // $(this).parent().parent().remove();
+            $(this).closest("tr").remove();
+        })
+
+        $("#btn").on("click", function () {
+            let title = $("#title").val();
+            let contents = $("#contents").val();
+            let writer = $("#writer").val();
+
+            let tr = $("<tr>");
+
+            let tdTitle = $("<td>");
+            tdTitle.append(title);
+
+            let tdContents = $("<td>");
+            tdContents.append(contents);
+
+            let tdWriter = $("<td>");
+            tdWriter.append(writer);
+
+            let tdDelete = $("<td>");
+            let btnDel=$("<button>");
+            btnDel.addClass("del"); //class 이름 부여
+            btnDel.html("X");
+            tdDelete.append(btnDel);
+
+            tr.append(tdTitle);
+            tr.append(tdContents);
+            tr.append(tdWriter);
+            tr.append(tdDelete);
+
+            $("table").append(tr);
+
+            $("#title").val("");
+            $("#contents").val("");
+            $("#writer").val("");
+            $("#title").focus();
+        })
+
+    </script>
+</body>
+
+</html>
