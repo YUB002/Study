@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam01</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <style>
+        div{border: 1px solid black;}
+        #box{width: 200px;height: 200px;}
+    </style>
+</head>
+<body>
+    <!-- JQuery -->
+    <!-- 브라우저별 호환성 이슈를 해결하며 등장한 Framework -->
+    <!-- 과거  Javascript 의 문법적 불편함을 해소했던 Framework -->
+
+    <div id="box"></div>
+    
+    <script>
+
+
+
+        $("#box").html("Hello JQuery");
+        let divText = $("#box").html();
+        console.log(divText)
+
+        // $("#box").css("background-color","pink").css("color","white");
+
+        $("#box").css({
+            "background-color":"pink",
+            "color":"white"
+        });
+    </script>
+
+</body>
+</html>
