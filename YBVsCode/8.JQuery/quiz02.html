@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quiz02</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+</head>
+<body>
+    <!-- 덧셈기 -->
+    <p>P1</p>
+    <p>P2</p>
+    <p>P3</p>
+    <p>P4</p>
+    <input type="text" id="numtext" placeholder="줄 번호를 입력하세요">
+    <input type="text" id="coltext" placeholder="색을 입력하세요">
+    <button id="btn">적용</button>
+    <script>
+        $("#btn").on("click",function(){
+            $("p:nth-child("+$("#numtext").val()+")").css("background-color",$("#coltext").val())
+            $("#numtext").val("");$("#coltext").val("");
+            $("#numtext").focus();
+        });
+    </script>
+</body>
+</html>
