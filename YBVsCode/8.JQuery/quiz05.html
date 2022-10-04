@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quiz05</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <style>
+        #box{
+            border: 1px solid black;
+            width: 500px;
+            height: 300px;
+            overflow: auto;
+            margin: auto;
+        }
+        #controls {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box"></div>
+    <div id="controls">
+        <button id="upbtn">위로 추가하기 </button>
+        <button id="downbtn">아래로 추가하기</button>
+    </div>
+
+    <script>
+        let count = 1;
+        $("#upbtn").on("click", function () {
+            let prependDiv = $("<div>");
+            prependDiv.html("New Line : " + count++);
+            $("#box").prepend(prependDiv)
+        })
+        $("#downbtn").on("click", function () {
+            let appendDiv = $("<div>");
+            appendDiv.html("New Line : " + count++);
+            $("#box").append(appendDiv)
+        })
+    </script>
+
+</body>
+
+</html>
