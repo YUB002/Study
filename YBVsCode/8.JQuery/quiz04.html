@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quiz04</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <style>
+        #text1{display: block;}
+        #text2{float: left;}
+    </style>
+</head>
+<body>
+    <input type="text" id="text1">
+    <input type="text" id="text2">
+    <div id="check"></div>
+    <script>
+        $("#text2").on("keyup",function(){
+            if($("#text2").val()==$("#text1").val()){
+                $("#check").html("패스워드가 일치합니다").css("color","blue");
+            }else{
+                $("#check").html("패스워드가 불일치합니다").css("color","red");
+            }
+        });
+    </script>
+</body>
+</html>
