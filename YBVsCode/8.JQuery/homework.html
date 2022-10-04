@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>homework</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        div {
+            width: 500px;
+            margin: auto;
+        }
+        hr {
+            margin: 30px;
+        }
+        #top {
+            height: 40px;
+        }
+        #top>input {
+            height: 100%;
+            width: 50%;
+        }
+        #bottom {
+            height: 100px;
+        }
+        #bottom>input {
+            height: 100%;
+            width: 100%;
+        }
+        #btnbox {
+            text-align: right;
+        }
+        #btn {
+            width: 50px;
+            height: 30px;
+            background-color: #77af9c;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .div>div{
+            float: left;
+        }
+        .divtext{
+            width:95%
+        }
+        .divwriter{
+            background-color: #77af9c;
+            box-shadow: 1px 1px 1px 1px gray;
+            margin: 2apx;
+            color: white;
+            width: 100%;
+        }
+        .divcontent{
+            background-color:white;
+            float: left;
+            box-shadow: 1px 1px 1px 1px gray;
+            margin: 2px;
+            width: 100%;
+        }
+        .divdelete{
+            width:5%;
+        }
+        .divdelete>button{
+            width: 100%;
+            margin-left: 5px;
+            background-color: #77af9c;
+            border: none;
+            color: white;
+            box-shadow: 1px 1px 1px 1px gray;
+            border-radius: 5px;
+        }
+        .divdelete>button:hover,#btn{
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="top">
+            <input type="text" id="writer" placeholder="작성자명을 입력해주세요.">
+        </div>
+        <div id="bottom">
+            <input type="text" id="contents" placeholder="내용을 입력해주세요.">
+        </div>
+        <div id="btnbox">
+            <button id="btn">Reply</button>
+        </div>
+    </div>
+
+    <hr>
+    <div id="box"></div>
+
+
+    <script>
+        $(document).on("click",".delete",function(){
+            $(this).parent().parent().remove();
+        })
+
+        $("#btn").on("click", function () {
+            let writer = $("#writer").val()
+            let contents = $("#contents").val();
+            
+            let div=$("<div>")
+            div.addClass("div")
+
+            let divText=$("<div>");
+            divText.addClass("divtext");
+
+            let divWriter = $("<div>");
+            divWriter.addClass("divwriter")
+            divWriter.append(writer);
+            
+            let divContents = $("<div>");
+            divContents.addClass("divcontent")    
+            divContents.append(contents);
+
+            let divDelete = $("<div>");
+            divDelete.addClass("divdelete")
+            let btnDel=$("<button>");
+            btnDel.addClass("delete");
+            btnDel.html("X");
+            divDelete.append(btnDel);
+
+            divText.append(divWriter);
+            divText.append(divContents);
+
+            div.append(divText);
+            div.append(divDelete);
+
+            $("#box").append(div);
+            $("#writer").val("");
+            $("#contents").val("");
+            $("#writer").focus();
+        })
+    </script>
+</body>
+
+</html>
