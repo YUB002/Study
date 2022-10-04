@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam03</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <style>
+        div{border: 1px solid black;}
+    </style>
+</head>
+<body>
+    <!-- 동적 요소 제어 -->
+    <!-- before / prepend / append / after -->
+
+    <div id="box">
+        기존 데이터
+    </div>
+    <script>
+        let prependBtn=$("<button>");
+        prependBtn.html("Prepend")
+        let prependDiv=$("<div>");
+        prependDiv.prepend(prependBtn);
+        $("#box").prepend(prependDiv);
+
+        let appendInput=$("<input>");
+        appendInput.attr("type","text"); // input에 type 속성부여
+        let appendDiv =$("<div>");
+        appendDiv.append(appendInput)
+        $("#box").append(appendDiv);
+
+        // $("#box").prepend("prepend");
+        // $("#box").append("<br><input type=text placeholder=append>");
+        // $("#box").before("이곳이 before");
+        // $("#box").after("이곳이 after");
+    </script>
+
+
+</body>
+</html>
