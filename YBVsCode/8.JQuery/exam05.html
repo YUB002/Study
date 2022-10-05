@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam05</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+        $(function(){
+    //         HTML 요소 검색 (jquery!라서 js에서는 사용불가) 
+    //         parent() : 기준 요소의 parent요소를 찾아 반환 
+    //         parent() 함수에 선택자를 지정할 순 있으나,  오로지 자신의 parent만 검색 가능
+            console.log($("#me").parent());
+            console.log($("#me").parent("#parent01"))
+            console.log($("#me").parent("#parent02"))//자신의 parent가 아니면 검색 불가
+            console.log($("#me").parent("#grand_parent"));//자신의 직계 parent가 아니면 조상 요소도 검색 불가
+            console.log("-----------parent 실습");
+
+
+            // closest() : 기준 요소의 parent부터 모든 조상 중 선택자 조건에 맞는 요소를 찾아 반환 
+            // ex) closest("#p_parent")
+            console.log($("#me").closest());
+            console.log($("#me").closest("#parent01"));
+            console.log($("#me").closest("#grand_parent"));
+            console.log($("#me").closest("#home"));
+            console.log($("#me").closest("#parent02"));//자신의 parent부터 조상이 아니면 검색 불가
+            console.log("-----------closest 실습");
+
+            //children() : 기준 요소의 직계 자손을 검색하여 반환
+            console.log($("#me").children());//직계자손에 속하는 시스터 둘만 검색 가능 
+            console.log($("#me").children("#sister02"));
+            console.log($("#me").children()[1]);// 배열에서 하나 꺼내면 자바스크릅트 오브젝트로 꺼내지더라
+            console.log($("#me").children("#baby"));//children은 직계만 검색 가능 
+            console.log("-----------children 실습");
+
+            //find() : 기존 요소의 후손 전체에서 대상을 검색 가능 
+            console.log($("#me").find()); //대상의 인자값이 없으면 검색에 실패한다, 선택자로 검색
+            console.log($("#me").find("#baby02")); 
+            console.log("-----------find 실습");
+        
+            //siblings() : 기준 요소와 동수준 요소를 검색하여 반환
+            console.log($("#me").siblings());
+            console.log($("#me").prev());
+            console.log($("#me").next());
+            console.log($("#me").siblings("#brother02"));
+            console.log("-----------siblings 실습");
+            
+            //Quiz01, brother02를 기준으로 baby02를 검색하여 background-color에 pink를 설정하세요.
+            $("#brother02").siblings("#me").find("#baby02").css("background-color","pink");
+
+            //Quiz02, baby를 기준으로 parent02를 검색하여 color를 green으로 성정하세요.
+            $("#baby").closest("#parent01").siblings("#parent02").css("color","green");
+        })
+    </script>
+</head>
+<body>
+    <div id="home">
+        Home
+        <div id="grand_parent">
+            GrandParent
+            <div id="parent01">
+                Parent01
+                <div id="brother01">
+                    Brother01
+                </div>
+                <div id="me">
+                    Me
+                    <div id="sister01">
+                        Sister01
+                        <div id="baby">
+                            Baby01
+                        </div>
+                    </div>
+                    <div id="sister02">
+                        Sister02
+                        <div id="baby02">
+                            Baby02
+                        </div>
+                    </div>
+                </div>
+                <div id="brother02">
+                    Brother02
+                </div>
+            </div>
+            <div id="parent02">
+                Parent02
+            </div>
+        </div>
+    </div>
+</body>
+</html>
