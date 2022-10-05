@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quiz08</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+    $(function(){
+        $("#text").on("keydown",function(key){
+            if(key.keyCode==13 && key.shiftKey==false){
+                let div=$("<div>");
+                div.attr("id","textbox")
+                div.append($("#text").html());
+                $("#top").append(div);
+                $("#text").html("");
+                $("#text").focus();
+                $("#top").scrollTop($("#top")[0].scrollHeight);
+                return false;
+            }})
+        $("#send").on("click",function(){
+            let div=$("<div>");
+                div.attr("id","textbox")
+                div.append($("#text").html());
+                $("#top").append(div);
+                $("#text").html("");
+                $("#text").focus();
+                $("#top").scrollTop($("#top")[0].scrollHeight);
+        })
+    })
+    </script>
+    <style>
+        @font-face {
+            font-family: "font";
+            src: url(EF_YOONY\(윈도우용_TTF\).ttf);
+        }
+        * {
+            box-sizing: border-box;
+            font-family: "font";
+        }
+        .container{
+            margin: auto;
+            width: 400px;
+            height: 500px;
+        }
+        #top {
+            background-color:#77af9c73;
+            width: 100%;
+            height: 80%;
+            overflow: auto;
+            border: 1px solid black;
+            word-wrap: break-word;
+        }
+        #top::-webkit-scrollbar{
+            width: 10px;
+        }
+        #top::-webkit-scrollbar-thumb{
+            background-color:#465e5657;
+            border-radius: 5px; 
+        }
+        #top::-webkit-scrollbar-track{
+            background-color: #77af9c00;
+            border-radius: 5px;
+        }
+        #bottom {
+            width: 100%;
+            height: 20%;
+            border: 1px solid black;
+            border-bottom: none;
+        }
+        #text {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+        }
+        #textbox{
+            background-color: white;
+            min-width: 25px;
+            width: fit-content;
+            min-height: 30px;
+            max-width: 280px;
+            margin: 15px;
+            border-radius: 5px;
+            padding: 4px;    
+        }
+        #footer{
+            border: 1px solid black;
+            height: 40px;
+            line-height: 38px;
+            border-top: none;
+        }
+        #emojibtn{
+            position: relative;
+            left: 8px;
+        }
+        #send{
+            position: relative;
+            left: 310px;
+        }
+        .footerbtn:hover{
+            cursor: pointer;
+        }
+        #emojibox{
+            position: absolute;
+            top: 259px;
+            border: 1px solid black;
+            width: 400px;
+            height: 150px;
+            background-color:#ddeee8;
+            margin: auto;
+        }
+        #emojiesc{
+            height: 30px;
+            width: 30px;
+            text-align: center;
+        }
+        #emojiesc:hover{
+            cursor: pointer;
+        }
+        .emojiimg{
+            width: 110px;
+            height: 110px;
+            margin-left: 15px;
+            margin-top: 5px;
+        }
+        .emojiimg:hover{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="top">
+        </div>
+        <div id="emojibox">
+            <div id="emojiesc">X</div>
+                <img src="emoji1.gif" id="emoji1" class="emojiimg">
+                <img src="emoji2.gif" id="emoji2" class="emojiimg">
+                <img src="emoji4.gif" id="emoji3" class="emojiimg">
+        </div>
+        <div id="bottom">
+            <div id="text" contenteditable="true"></div>    
+        </div>
+
+        <div id="footer">
+            <button id="emojibtn" class="footerbtn">😀</button>
+            <button id="send" class="footerbtn">전송</button>
+        </div>  
+    </div>
+    
+    <script>
+        $("#emojibox").hide();
+        $("#emojibtn").on("click",function(){
+            $("#emojibox").show();
+        })
+         $("#emojiesc").on("click",function(){
+            $("#emojibox").hide();
+        })
+        $("#emoji1").on("click",function(){
+            let div=$("<div>");
+            div.attr("id","textbox")
+            div.append($("#emoji1").clone());
+            $("#top").append(div);
+            $("#top").scrollTop($("#top")[0].scrollHeight);
+        })
+        $("#emoji2").on("click",function(){
+            let div=$("<div>");
+            div.attr("id","textbox")
+            div.append($("#emoji2").clone());
+            $("#top").append(div);
+            $("#top").scrollTop($("#top")[0].scrollHeight);
+        })
+        $("#emoji3").on("click",function(){
+            let div=$("<div>");
+            div.attr("id","textbox")
+            div.append($("#emoji3").clone());
+            $("#top").append(div);
+            $("#top").scrollTop($("#top")[0].scrollHeight);
+        })
+    </script>
+</body>
+</html>
