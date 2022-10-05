@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>quiz07</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>
+    //위쪽에 짜는 이유는 이렇게 해도 된다는 걸 보여주는 것 아래에 짜도 상관없음
+
+        //window.onload와 동일 
+        $(function(){
+            $("#btn").on("click",function(){
+
+                if($("input[type=file]").length>4){
+                    alert("파일첨부는 최대 5개까지만 가능합니다.")
+                    return;
+                }
+                let fileDiv=$("<div>");
+
+                let inputFile=$("<input>");
+                inputFile.attr("type","file");
+
+                let xAnker=$("<a>");
+                xAnker.attr("href","#");//#은 현재 자신의 페이지의미
+                xAnker.html("x");
+
+                fileDiv.append(inputFile);
+                fileDiv.append(xAnker);
+
+                $("#box").append(fileDiv);
+            })
+
+            $(document).on("click","a",function(){
+                $(this).parent().remove();
+            })
+        })
+    </script>
+    <style>
+        a{text-decoration:none;}/*a태그 밑줄 제거*/
+    </style>
+</head>
+<body>
+    <div>파일첨부
+        <button id="btn">+</button>
+    </div>
+    <fieldset id="box">
+        <legend>File List</legend>
+    </fieldset>
+    <!-- <script>
+        let i=0;
+        $(document).on("click",".delete",function(){
+            $(this).parent().remove();
+            i--;
+        })
+
+        $("#btn").on("click",function(){
+            if(i<5){
+            let div=$("<div>");
+            let file=$("<input>");
+            file.attr("type","file");
+            div.append(file);
+
+            let btnDel=$("<button>");
+            btnDel.html("X");
+            btnDel.addClass("delete");
+            div.append(btnDel);
+            $("#box").append(div);
+    
+            i++;
+            }else{
+                alert("첨부할 수 있는 파일의 최대 개수는 5개입니다.")
+            }
+        })
+    </script> -->
+</body>
+</html>
