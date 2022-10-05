@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam06</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <style>
+        div{border: qpx solid black;}
+        #box{
+            width: 200px;
+            height: 200px;
+            background-color: dodgerblue;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="box">
+
+    </div>
+    <button id="show">Show</button>
+    <button id="hide">Hide</button>
+    <button id="slideup">slideUp</button>
+    <button id="slidedown">slideDown</button>
+    <button id="fadeIn">fadeIn</button>
+    <button id="fadeOut">fadeOut</button>
+    <script>
+        $("#show").on("click",function(){
+            $("#box").show(1000,function(){
+                alert("show가 완료됐을 때 실행 될 함수")
+            }); //첫번째 인자값은 속도(밀리세컨드 1000:1초),두번째 인자값으로 콜백펑션
+        })
+        $("#hide").on("click",function(){
+            $("#box").hide(1000,function(){
+                alert("hide가 완료됐을 때 실행 될 함수")
+            });
+        })
+        $("#slideup").on("click",function(){
+            $("#box").slideUp(1000,function(){
+                alert("slideUp 가 완료됐을 때 실행 될 함수")
+            });
+        })
+        $("#slidedown").on("click",function(){
+            $("#box").slideDown(1000,function(){
+                alert("slideDown 가 완료됐을 때 실행 될 함수")
+            });
+        })
+        $("#fadeIn").on("click",function(){
+            $("#box").fadeIn(1000,function(){
+                alert("fadeIn 가 완료됐을 때 실행 될 함수")
+            });
+        })
+        $("#fadeOut").on("click",function(){
+            $("#box").fadeOut(1000,function(){
+                alert("fadeOut 가 완료됐을 때 실행 될 함수")
+            });
+        })
+    </script>
+</body>
+</html>
