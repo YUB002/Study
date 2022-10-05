@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam08</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <style>
+        div{border: 1px solid black;}
+    </style>
+</head>
+<body>
+    <!-- div contenteditable -->
+    <!-- 엔터를 누르면 자동으로 줄이 바뀌는 기능이 자체 탑재되어 있음 -->
+    
+    <div id="text" contenteditable="true">ABC</div>
+    <script>
+         $("#text").on("keydown",function(key){ //keyup은 타이밍이 안맞기 때문에 keydown으로 해야 기본기능을 방지할 수 있음
+            if(key.keyCode==13 && key.shiftKey==false){
+                return false; // 디폴트 기능 자동 동작 방지
+            }
+         })
+    </script>
+</body>
+</html>
